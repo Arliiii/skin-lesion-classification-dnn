@@ -1,5 +1,4 @@
-<img width="889" height="415" alt="Capture" src="https://github.com/user-attachments/assets/23eb4df6-59e2-488d-b52c-214c72c08f9b" /># ResNet-50 Multi-Scale Attention Skin Lesion Classifier
-
+# ResNet-50 Multi-Scale Attention Skin Lesion Classifier
 This project keeps one active architecture: an ImageNet-pretrained ResNet-50
 backbone with a custom multi-scale CBAM attention head for seven-class
 HAM10000 skin lesion classification.
@@ -65,6 +64,8 @@ python -m skin_lesion_attention.predict --checkpoint outputs/checkpoints/best.pt
 ```powershell
 python -m skin_lesion_attention.visualize --checkpoint outputs/checkpoints/best.pt --image path/to/image.jpg --attention-cmap jet_r
 ```
+<img width="889" height="415" alt="Capture" src="https://github.com/user-attachments/assets/23eb4df6-59e2-488d-b52c-214c72c08f9b" />
+
 <img width="849" height="414" alt="Captfure" src="https://github.com/user-attachments/assets/2445cbb0-0fec-45a3-a841-d87dfda8a9d2" />
 
 
