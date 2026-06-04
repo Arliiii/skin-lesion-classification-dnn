@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1240" viewBox="0 0 1100 1240" role="img" aria-labelledby="title desc">
+  <title id="title">ResNet-50 Multi-Scale Attention CNN Architecture</title>
+  <desc id="desc">Updated architecture diagram showing the ResNet-50 transfer-learning backbone, custom multi-scale attention head, train-only balanced sampling, class-balanced focal loss, frozen-backbone warmup with differential learning rates, and seven-class HAM10000 output.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 15px Arial, sans-serif; fill: #475569; }
+      .box-title { font: 700 16px Arial, sans-serif; fill: #0f172a; }
+      .box-text { font: 400 13px Arial, sans-serif; fill: #334155; }
+      .small { font: 400 12px Arial, sans-serif; fill: #475569; }
+      .badge { font: 700 12px Arial, sans-serif; fill: #1e293b; }
+      .arrow { stroke: #334155; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .plain-line { stroke: #334155; stroke-width: 2.2; fill: none; }
+      .panel-label { font: 700 15px Arial, sans-serif; fill: #1e293b; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="1240" fill="#f8fafc"/>
+  <text x="550" y="48" text-anchor="middle" class="title">Current Architecture: ResNet-50 Multi-Scale Attention CNN</text>
+  <text x="550" y="75" text-anchor="middle" class="subtitle">Pretrained ResNet-50, custom multi-scale CBAM head, balanced focal loss, warmup, and lower backbone LR</text>
+
+  <rect x="390" y="108" width="320" height="78" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="550" y="137" text-anchor="middle" class="box-title">HAM10000 Dataset</text>
+  <text x="550" y="162" text-anchor="middle" class="box-text">10015 dermoscopic RGB images</text>
+
+  <line x1="550" y1="186" x2="550" y2="358" class="arrow"/>
+
+  <rect x="350" y="358" width="400" height="92" rx="12" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+  <text x="550" y="388" text-anchor="middle" class="box-title">Preprocessing and Augmentation</text>
+  <text x="550" y="413" text-anchor="middle" class="box-text">299 x 299 tensors, ImageNet normalization</text>
+  <text x="550" y="434" text-anchor="middle" class="small">train only: crop, flip, rotation, color jitter, erasing</text>
+
+  <line x1="550" y1="450" x2="550" y2="488" class="arrow"/>
+
+  <rect x="90" y="488" width="920" height="180" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="550" y="520" text-anchor="middle" class="panel-label">Training Input Strategy</text>
+
+  <rect x="150" y="548" width="250" height="76" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="275" y="577" text-anchor="middle" class="box-title">Train Loader</text>
+  <text x="275" y="602" text-anchor="middle" class="box-text">balanced sampler</text>
+
+  <rect x="425" y="548" width="250" height="76" rx="12" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+  <text x="550" y="577" text-anchor="middle" class="box-title">Validation Loader</text>
+  <text x="550" y="602" text-anchor="middle" class="box-text">natural class distribution</text>
+
+  <rect x="700" y="548" width="250" height="76" rx="12" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+  <text x="825" y="577" text-anchor="middle" class="box-title">Test Loader</text>
+  <text x="825" y="602" text-anchor="middle" class="box-text">held-out final evaluation</text>
+
+  <line x1="550" y1="668" x2="550" y2="710" class="arrow"/>
+
+  <rect x="250" y="710" width="600" height="116" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="2.2"/>
+  <text x="550" y="746" text-anchor="middle" class="panel-label">ImageNet-Pretrained ResNet-50 Backbone</text>
+  <text x="550" y="773" text-anchor="middle" class="box-text">compact residual CNN feature extractor</text>
+  <text x="550" y="798" text-anchor="middle" class="small">outputs final 2048-channel feature map</text>
+
+  <line x1="550" y1="826" x2="550" y2="866" class="arrow"/>
+
+  <rect x="80" y="866" width="940" height="266" rx="18" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.2"/>
+  <text x="550" y="900" text-anchor="middle" class="panel-label">Custom Multi-Scale Attention Head</text>
+  <text x="550" y="924" text-anchor="middle" class="small">main project-specific architecture added after the pretrained backbone</text>
+
+  <rect x="130" y="944" width="240" height="74" rx="12" fill="#ffffff" stroke="#86efac" stroke-width="1.7"/>
+  <text x="250" y="970" text-anchor="middle" class="box-title">Branch A: 3x3 Conv</text>
+  <text x="250" y="994" text-anchor="middle" class="small">128 channels, local texture</text>
+
+  <rect x="430" y="944" width="240" height="74" rx="12" fill="#ffffff" stroke="#86efac" stroke-width="1.7"/>
+  <text x="550" y="970" text-anchor="middle" class="box-title">Branch B: 5x5 Conv</text>
+  <text x="550" y="994" text-anchor="middle" class="small">128 channels, wider morphology</text>
+
+  <rect x="730" y="944" width="240" height="74" rx="12" fill="#ffffff" stroke="#86efac" stroke-width="1.7"/>
+  <text x="850" y="970" text-anchor="middle" class="box-title">Branch C: Dilated 3x3</text>
+  <text x="850" y="994" text-anchor="middle" class="small">128 channels, larger context</text>
+
+  <text x="550" y="1041" text-anchor="middle" class="box-text">Concatenate parallel features: 3 x 128 = 384 channels</text>
+  <line x1="550" y1="1049" x2="550" y2="1062" class="arrow"/>
+
+  <rect x="185" y="1062" width="310" height="70" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="1.7"/>
+  <text x="340" y="1088" text-anchor="middle" class="box-title">CBAM Attention</text>
+  <text x="340" y="1112" text-anchor="middle" class="small">channel mask + spatial mask</text>
+
+  <line x1="495" y1="1097" x2="605" y2="1097" class="arrow"/>
+
+  <rect x="605" y="1062" width="310" height="70" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="1.7"/>
+  <text x="760" y="1088" text-anchor="middle" class="box-title">1x1 Fusion</text>
+  <text x="760" y="1112" text-anchor="middle" class="small">384 to 256 channels</text>
+
+  <line x1="550" y1="1132" x2="550" y2="1140" class="arrow"/>
+
+  <rect x="350" y="1140" width="400" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="550" y="1167" text-anchor="middle" class="box-title">Classifier and Softmax Output</text>
+  <text x="550" y="1190" text-anchor="middle" class="box-text">global pooling + dropout + dense 7 classes</text>
+
+  <rect x="55" y="1132" width="260" height="92" rx="12" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.7"/>
+  <text x="185" y="1160" text-anchor="middle" class="box-title">Training Controls</text>
+  <text x="185" y="1183" text-anchor="middle" class="small">freeze backbone for first 2 epochs</text>
+  <text x="185" y="1204" text-anchor="middle" class="small">LRs: backbone 1e-5, head 1e-4</text>
+
+  <rect x="785" y="1132" width="260" height="92" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="1.7"/>
+  <text x="915" y="1160" text-anchor="middle" class="box-title">Checkpointing</text>
+  <text x="915" y="1183" text-anchor="middle" class="small">best validation macro F1</text>
+  <text x="915" y="1204" text-anchor="middle" class="small">early stopping enabled</text>
+</svg>

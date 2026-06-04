@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skin-lesion-attention"
+version = "0.1.0"
+description = "Multi-Scale Attention CNN for HAM10000 skin lesion classification"
+requires-python = ">=3.10"
+dependencies = [
+  "matplotlib",
+  "numpy",
+  "pillow",
+  "pyyaml",
+  "torch",
+  "torchvision",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
